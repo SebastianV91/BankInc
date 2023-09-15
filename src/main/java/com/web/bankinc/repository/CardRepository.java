@@ -2,11 +2,15 @@ package com.web.bankinc.repository;
 
 
 import com.web.bankinc.dto.Card;
+import com.web.bankinc.mapper.BalanceCardMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
+import org.springframework.web.server.ResponseStatusException;
 
+import java.sql.SQLException;
 import java.util.*;
 
 @Component
@@ -53,6 +57,37 @@ public class CardRepository {
         int rows = jdbcTemplate.update(sql, card.getTypeProduct(), numberCard);
 
         return rows;
+
+    }
+
+    public Map<String, Object> selectBalanceRepository(Card card) throws ResponseStatusException, SQLException {
+
+        Map<String, Object> respuesta = new HashMap<>();
+        List<BalanceCardMapper> listBalanceCard = new ArrayList<>();
+
+        String sql = "SELECT CARDID, BALANCE "
+                + " FROM BANK_INC.CARD B "
+                + " WHERE B.CARDID = ? ";
+
+        List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql, card.getCardId());
+
+        if(rows != null){
+            for(Map<String, Object> row: rows){
+                BalanceCardMapper balanceCard = new BalanceCardMapper();
+                balanceCard.setNumCuenta((String) row.get("CARDID"));
+                balanceCard.setBalance((Integer) row.get("BALANCE"));
+                listBalanceCard.add(balanceCard);
+            }
+
+            if(rows.isEmpty()){
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            }else{
+                respuesta.put("BalanceCard", listBalanceCard);
+            }
+
+        }
+
+        return respuesta;
 
     }
 

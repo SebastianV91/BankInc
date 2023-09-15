@@ -31,4 +31,15 @@ public class CardController {
 
     }
 
+    @GetMapping("/balance/")
+    public ResponseEntity<?> getBalanceCard(@RequestBody Card card){
+        try {
+            return new ResponseEntity(cardService.selectBalance(card), HttpStatus.OK);
+        }catch(SQLException ex) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }catch(ResponseStatusException ex) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+    }
+
 }

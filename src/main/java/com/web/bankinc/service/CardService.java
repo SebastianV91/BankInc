@@ -56,4 +56,8 @@ public class CardService extends CardRepository {
 
     }
 
+    public Map<String, Object> selectBalance(Card card) throws ResponseStatusException, SQLException {
+        return selectBalanceRepository(card);
+    }
+
 }
