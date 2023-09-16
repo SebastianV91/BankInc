@@ -1,0 +1,99 @@
+{
+	"info": {
+		"_postman_id": "a325b60d-46f9-400b-af39-cddfb5b387ae",
+		"name": "Banking Credibanco",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "1. Generar numero de tarjeta",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"typeProduct\":2\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8084/card/number/",
+					"host": [
+						"localhost"
+					],
+					"port": "8084",
+					"path": [
+						"card",
+						"number",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "2. Activar tarjeta",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"status\": \"active\",\r\n    \"cardId\": \"5306917327933524\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8084/card/enroll/",
+					"host": [
+						"localhost"
+					],
+					"port": "8084",
+					"path": [
+						"card",
+						"enroll",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "5. Consultar saldo",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"cardId\":\"5306917327933524\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8084/card/balance/",
+					"host": [
+						"localhost"
+					],
+					"port": "8084",
+					"path": [
+						"card",
+						"balance",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
