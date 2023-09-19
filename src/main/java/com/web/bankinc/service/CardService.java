@@ -1,6 +1,7 @@
 package com.web.bankinc.service;
 
 import com.web.bankinc.dto.Card;
+import com.web.bankinc.dto.Transfer;
 import com.web.bankinc.repository.CardRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -58,6 +59,34 @@ public class CardService extends CardRepository {
 
     public Map<String, Object> selectBalance(Card card) throws ResponseStatusException, SQLException {
         return selectBalanceRepository(card);
+    }
+
+    public Map<String, Object> rechargeCard(Transfer transfer){
+
+        Map<String, Object> response = new HashMap<String, Object>();
+
+        try {
+
+            if(selectNumberCard(transfer)){
+
+                if(rechargeCardRepository(transfer) == 1){
+                    response.put("mensaje", "Saldo recargado");
+                }else{
+                    response.put("mensaje", "Error al recargar el saldo");
+                }
+
+            }else{
+                response.put("mensaje", "Esta tarjeta no es existente");
+            }
+
+        }catch(Exception e){
+            // TODO: handle exception
+            System.out.println("ERROR EN PROCESOS BACKEND::"+e.getMessage());
+            response.put("mensaje", "Error en el backend");
+        }
+
+        return response;
+
     }
 
 }

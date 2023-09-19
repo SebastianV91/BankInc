@@ -2,6 +2,7 @@ package com.web.bankinc.repository;
 
 
 import com.web.bankinc.dto.Card;
+import com.web.bankinc.dto.Transfer;
 import com.web.bankinc.mapper.BalanceCardMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -88,6 +89,42 @@ public class CardRepository {
         }
 
         return respuesta;
+
+    }
+
+    public int rechargeCardRepository(Transfer transfer){
+
+        String sql = " UPDATE BANK_INC.CARD "
+                + " SET BALANCE=? "
+                + "WHERE CARDID = ? ";
+
+        transfer.setBalance((transfer.getBalance() + transfer.getIncome()));
+
+        int rows = jdbcTemplate.update(sql, transfer.getBalance(), transfer.getCardId());
+
+        return rows;
+
+    }
+
+    public boolean selectNumberCard(Transfer transfer){
+
+        String sql = "SELECT TITULAR, EXPIREDATE, BALANCE, STATUS, TYPEPRODUCT "
+                + " FROM BANK_INC.CARD  "
+                + "WHERE CARDID = ? ";
+
+        List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql, transfer.getCardId());
+
+        if(rows != null){
+
+            if(rows.isEmpty()){
+                return false;
+            }else{
+                return true;
+            }
+
+        }else{
+            return true;
+        }
 
     }
 

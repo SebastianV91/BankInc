@@ -1,6 +1,7 @@
 package com.web.bankinc.controller;
 
 import com.web.bankinc.dto.Card;
+import com.web.bankinc.dto.Transfer;
 import com.web.bankinc.service.CardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,7 +32,7 @@ public class CardController {
 
     }
 
-    @GetMapping("/balance/")
+    @GetMapping("/getbalance/")
     public ResponseEntity<?> getBalanceCard(@RequestBody Card card){
         try {
             return new ResponseEntity(cardService.selectBalance(card), HttpStatus.OK);
@@ -40,6 +41,13 @@ public class CardController {
         }catch(ResponseStatusException ex) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
+    }
+
+    @PostMapping("/balance")
+    public ResponseEntity<?> addBalanceCard(@RequestBody Transfer transfer){
+
+        return new ResponseEntity(cardService.rechargeCard(transfer), HttpStatus.OK);
+
     }
 
 }
